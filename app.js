@@ -1,23 +1,47 @@
-/* Entry file to be executed by Docker */
 
-/* Dependencies - Jest */
+const express = require("express");
 
-/* Test function */
-function add(a, b) {
-    return a + b;
+const app = express();
+
+app.use(express.json());
+
+// Home route
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Node.js CI/CD Pipeline Application",
+    status: "Running",
+  });
+});
+
+// Health check route
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+  });
+});
+
+// Addition API
+app.post("/add", (req, res) => {
+  const { a, b } = req.body;
+
+  if (typeof a !== "number" || typeof b !== "number") {
+    return res.status(400).json({
+      error: "Please provide two numeric values: a and b",
+    });
+  }
+
+  res.status(200).json({
+    result: a + b,
+  });
+});
+
+// Start server only when this file is run directly
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }
 
-/* Workflow */
-/*
-1- Pushing code to GitHub [`git push`]
-2- GitHub-Actions reading /github/workflows/ci.yml
-3- Setting up fresh runner with Docker pre-installed
-4- Cloning repository [`git clone <repository>`]
-5- Setting up Node.js and environment
-6- Installing dependencies `[npm install`]
-7- Running Unit and Integration Tests [`npm test`] 
-8- Building Docker Image by using GitHub Secrets
-9- Publishing Image to Docker Hub [`docker push`]
-*/
-
-module.exports = { add };
+module.exports = app;

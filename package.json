@@ -1,20 +1,18 @@
+
 {
-  "name": "nodejs-github-actions-ci",
+  "name": "nodejs-cicd-pipeline",
   "version": "1.0.0",
-  "description": "A Project to demonstrate CI/CD Pipeline using GitHub-Actions.",
-  "license": "ISC",
-  "author": "KM",
-  "type": "commonjs",
+  "description": "Node.js web application with automated testing and Docker CI/CD using GitHub Actions",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "jest --runInBand"
   },
   "dependencies": {
-    "chalk": "^6.0.0",
     "express": "^5.2.1"
   },
   "devDependencies": {
-    "jest": "^30.4.2"
+    "jest": "^30.4.2",
+    "supertest": "^7.1.4"
   }
 }
